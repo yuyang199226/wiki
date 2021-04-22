@@ -18,3 +18,39 @@
 
 ## redis 有哪些数据类型？
 string list hash set  sorted set
+
+
+## 持久化
+1. RDB (redis database): 基于时间点的快照
+2. AOF(append only file) 写操作以日志记录下来
+
+
+RDB 的优点：
+1. RDB是个紧凑的时间点表示的单个文件，非常适合作备份。
+
+
+## 缓存穿透
+访问到数据库也没有的数据
+## 缓存击穿
+一个热点key失效，大量的访问打到数据库
+## 缓存雪崩
+是大面积版的缓存击穿，key在同一时间失效，大量的访问打到数据库。解决方案：给ttl 额外加上一个随机的时间
+
+
+redis red key
+算法：
+1. 计算当前的时间戳
+2. 依次访问每个redis,尝试set key
+
+
+
+
+redis 高可用
+哨兵模式
+提供以下几点功能
+- 监控 不断检查master 和slaver 是否正常运行
+- 通知
+- 故障转移
+- 提供配置 client 可以请求哨兵拿到master的地址
+
+
