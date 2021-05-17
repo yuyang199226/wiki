@@ -54,3 +54,37 @@ redis 高可用
 - 提供配置 client 可以请求哨兵拿到master的地址
 
 
+
+## redis hash 使用的是什么数据结构？
+    ziplist 和 hashtable
+
+## redis 速度为什么这么快？
+    1. 完全基于内存
+    2. 单核cpu, 避免了上下文调度和竞争
+    3. 采用非阻塞IO, IO 多路复用
+    4. 
+redis 使用场景？
+
+## redis 的内存驱逐策略
+ 当内存达到限制时，会采用驱逐策略，策略有： (noeviction)不驱逐直接报错, LRU, random, TTL, redis-4.0 加了 LFU
+ 默认策略是 noeviction 查看命令 `config get maxmemory-policy`
+ 获取最大内存命令 `config get maxmemory` 将maxmemory 设置为0会导致没有内存限制，这是64位操作系统的默认设置。对于32位操作系统maxmemory默认是3GB.
+
+ ## redis 集群（指的是分片 partation）
+ ### redis 集群能够提供什么功能？
+ 1. 数据分片
+ 2. 在某些节点failed 后仍然能够操作
+
+redis cluster 需要2个tcp 连接。默认是6379，在加10000，是16379。 16379用作节点之间的通信。
+
+## redis cluster data sharding
+    redis 的槽位是固定的，16384。 每个节点会被分配一些槽位。crc16(key)%16384
+
+## redis哈希槽 和一致性哈希的区别？
+1. redis hash槽并不是闭合的，它一共有16384个槽，使用CRC16算法计算key的hash值，与16384取模，确定数据在哪个槽中，从而找到所属的redis节点；一致性hash表示一个0到2^32的圆环，对数据计算hash后落到该圆环中，顺时针第一个节点为其所属服务。
+
+2. 一致性hash是通过虚拟节点去避免服务节点宕机后数据转移造成的服务访问量激增、内存占用率过高、数据倾斜等问题，保证数据完整性和集群可用性的；而hash集群是使用主从节点的形式，主节点提供读写服务，从节点进行数据同步备份，当主节点出现故障后，从节点继续提供服务。
+
+[hash 相关](https://blog.csdn.net/swl1993831/article/details/108023473)
+
+
