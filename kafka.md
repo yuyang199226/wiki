@@ -115,3 +115,10 @@ kafka 什么时候 rebalance
 
 
 kafka 如何保证数据不丢失？
+
+
+设计抢红包？
+
+布隆过滤器
+mysql 隔离级别
+go channel 底层实现
